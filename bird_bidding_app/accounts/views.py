@@ -11,17 +11,17 @@ def is_admin(user):
 def redirect_based_on_role(request):
     user = request.user
     if user.is_admin:
-        return redirect('admin_dashboard')
+        return redirect('admin_dashboard') 
     elif user.is_seller:
-        return redirect('seller_dashboard')
+        return redirect('seller_dashboard') 
     elif user.is_buyer:
-        return redirect('buyer_dashboard')
+        return redirect('buyer_dashboard') 
     else:
         return redirect('set_role')  
 
 
 def profile_view(request):
-    return render(request, 'accounts/profile.html')
+    return render(request, 'accounts/profile.html') 
 
 
 def custom_logout_view(request):
