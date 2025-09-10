@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}Approve Change Request - Bird Bidding App{% endblock %}
+
+{% block content %}
+<h2>Approve Change Request</h2>
+
+<p><strong>Bird:</strong> {{ request_obj.bird.name }}</p>
+<p><strong>Current Buyer:</strong> {{ request_obj.current_approved_bid.buyer.username }}</p>
+<p><strong>Requested Buyer:</strong> {{ request_obj.requested_new_bid.buyer.username }}</p>
+<p><strong>Reason:</strong> {{ request_obj.reason|default:"-" }}</p>
+
+<form method="POST">
+  {% csrf_token %}
+  <button type="submit" class="btn btn-primary">Approve</button>
+  <a href="{% url 'adminpanel:admin_dashboard' %}" class="btn btn-secondary">Cancel</a>
+</form>
+{% endblock %}

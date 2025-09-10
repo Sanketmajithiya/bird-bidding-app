@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Birds for Bidding{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'buyer/css/bird_list.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="birds-container">
+    <h2 class="page-title">Birds for Bidding</h2>
+
+    <!-- Search Bar Section -->
+    <form method="GET" action="{% url 'buyer:bird_list' %}">
+        <div class="search-input-group">
+            <input type="text" name="q" placeholder="Search birds by name, age, color, or price..." value="{{ search_query }}">
+            <button type="submit" class="search-btn"><i class="fas fa-search"></i> Search</button>
+        </div>
+    </form>
+
+    <!-- Birds Display Section -->
+    {% if birds %}
+    <div class="birds-grid">
+        {% for bird in birds %}
+        <div class="bird-card">
+            <div class="bird-image-container">
+                <div class="bird-image">
+                    <img src="{{ bird.image.url }}" alt="{{ bird.name }}" />
+                    <div class="bird-color">{{ bird.color }}</div>
+                </div>
+            </div>
+
+            <div class="bird-details">
+                <h3 class="bird-name">{{ bird.name }}</h3>
+                <div class="bird-info">
+                    <p class="bird-age"><i class="fas fa-calendar-alt"></i> {{ bird.age }} years old</p>
+                    <p class="bird-price"><i class="fas fa-tag"></i> ₹{{ bird.price }}</p>
+                    <p class="bird-likes"><i class="fas fa-heart"></i> {{ bird.likes.count }} likes</p>
+                </div>
+
+                <div class="bird-actions">
+                    <a href="{% url 'buyer:like_bird' bird.id %}" class="btn-like">
+                        <i class="fas fa-heart"></i> Like
+                    </a>
+                    <a href="{% url 'buyer:bid_bird' bird.id %}" class="btn-bid">
+                        <i class="fas fa-gavel"></i> Place/Increase Bid
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="no-birds">
+        <i class="fas fa-dove"></i>
+        <p>No birds found for the search query "{{ search_query }}".</p>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

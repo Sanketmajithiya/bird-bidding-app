@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Bid for {{ bird.name }}{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'buyer/css/bid_bird.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="bid-container">
+    <div class="bid-card">
+        <div class="bid-header">
+            <h2><i class="fas fa-feather-alt"></i> Bid for {{ bird.name }}</h2>
+            <div class="bird-image">
+                <img src="{{ bird.image.url }}" alt="{{ bird.name }}">
+            </div>
+        </div>
+        
+        <div class="bid-info">
+            {% if highest_bid %}
+            <div class="current-bid">
+                <i class="fas fa-trophy"></i>
+                <h3>Current Highest Bid</h3>
+                <p class="bid-amount">₹{{ highest_bid.amount }}</p>
+                <p class="bidder">by {{ highest_bid.buyer.username }}</p>
+            </div>
+            {% else %}
+            <div class="no-bid">
+                <i class="fas fa-exclamation-circle"></i>
+                <p>No bids yet</p>
+                <p class="subtext">Be the first to bid on this bird!</p>
+            </div>
+            {% endif %}
+            
+            {% if error %}
+            <div class="error-message">
+                <i class="fas fa-exclamation-triangle"></i>
+                <p>{{ error }}</p>
+            </div>
+            {% endif %}
+        </div>
+        
+        <form method="POST" class="bid-form">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="bid-amount"><i class="fas fa-indian-rupee-sign"></i> Your Bid Amount</label>
+                <input type="number" step="0.01" name="amount" id="bid-amount" placeholder="Enter your bid amount" required>
+            </div>
+            <button type="submit" class="submit-btn">
+                <i class="fas fa-gavel"></i> Submit Bid
+            </button>
+        </form>
+        
+        <div class="action-links">
+            <a href="{% url 'buyer:bird_list' %}" class="back-link">
+                <i class="fas fa-arrow-left"></i> Back to Bird List
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

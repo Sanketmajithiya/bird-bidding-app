@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bird Bidding App</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #4e54c8;
+            --secondary: #8f94fb;
+            --accent: #ff9933;
+            --light: #f8f9fa;
+            --dark: #343a40;
+            --success: #28a745;
+            --warning: #ffc107;
+            --danger: #dc3545;
+            --gray: #6c757d;
+            --light-bg: #f5f7f9;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--light-bg);
+            color: var(--dark);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        /* Header Styles */
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .header-content h1 {
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+        
+        .header-content p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            font-weight: bold;
+        }
+        
+        /* Dashboard Layout */
+        .dashboard {
+            display: grid;
+            grid-template-columns: 1fr 3fr;
+            gap: 20px;
+        }
+        
+        /* Sidebar */
+        .sidebar {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            height: fit-content;
+        }
+        
+        .sidebar-menu {
+            list-style: none;
+        }
+        
+        .sidebar-menu li {
+            margin-bottom: 10px;
+        }
+        
+        .sidebar-menu a {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 15px;
+            color: var(--dark);
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .sidebar-menu a:hover, .sidebar-menu a.active {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+        }
+        
+        /* Main Content */
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        /* Search Bar */
+        .search-bar {
+            background: white;
+            border-radius: 10px;
+            padding: 15px 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .search-bar input {
+            flex: 1;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+        
+        .search-bar button {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        
+        /* Stats Cards */
+        .stats-cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+        
+        .stat-card {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .stat-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 20px;
+        }
+        
+        .stat-info h3 {
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+        
+        .stat-info p {
+            color: var(--gray);
+            font-size: 14px;
+        }
+        
+        /* Birds Grid */
+        .birds-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
+        
+        .bird-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease;
+        }
+        
+        .bird-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .bird-image {
+            height: 180px;
+            overflow: hidden;
+        }
+        
+        .bird-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .bird-info {
+            padding: 15px;
+        }
+        
+        .bird-info h3 {
+            font-size: 18px;
+            margin-bottom: 10px;
+            color: var(--primary);
+        }
+        
+        .bird-details {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+        
+        .bird-price {
+            font-size: 20px;
+            font-weight: bold;
+            color: var(--success);
+            margin-bottom: 10px;
+        }
+        
+        .bird-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .likes {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            color: var(--danger);
+        }
+        
+        .bid-btn {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        
+        /* Add Bird Form */
+        .add-bird-form {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            margin-top: 20px;
+        }
+        
+        .form-title {
+            font-size: 20px;
+            margin-bottom: 20px;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+        
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+        
+        .form-group textarea {
+            height: 100px;
+            resize: vertical;
+        }
+        
+        .submit-btn {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .dashboard {
+                grid-template-columns: 1fr;
+            }
+            
+            .stats-cards {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .birds-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="header-content">
+                <h1>Bird Bidding App</h1>
+                <p>Bid on beautiful birds from around the world</p>
+            </div>
+            <div class="user-info">
+                <div class="user-avatar">SM</div>
+                <div>
+                    <div>majithiya.sanket</div>
+                    <div style="font-size: 12px;">Seller</div>
+                </div>
+            </div>
+        </header>
+        
+        <div class="dashboard">
+            <div class="sidebar">
+                <ul class="sidebar-menu">
+                    <li><a href="#" class="active"><i class="fas fa-home"></i> Dashboard</a></li>
+                    <li><a href="#"><i class="fas fa-plus-circle"></i> Add New Bird</a></li>
+                    <li><a href="#"><i class="fas fa-list"></i> Active Listings</a></li>
+                    <li><a href="#"><i class="fas fa-history"></i> Recent Activity</a></li>
+                    <li><a href="#"><i class="fas fa-rupee-sign"></i> Pricing Tips</a></li>
+                    <li><a href="#"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+                </ul>
+            </div>
+            
+            <div class="main-content">
+                <div class="search-bar">
+                    <input type="text" placeholder="Search birds by name, age, color, or price...">
+                    <button><i class="fas fa-search"></i> Search</button>
+                </div>
+                
+                <div class="stats-cards">
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-dove"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>8</h3>
+                            <p>Active Listings</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-shopping-cart"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>5</h3>
+                            <p>Birds Sold</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-rupee-sign"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>₹12,450</h3>
+                            <p>Total Revenue</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <h2 style="margin-top: 20px;">Birds for Bidding</h2>
+                
+                <div class="birds-grid">
+                    <!-- Bird Card 1 -->
+                    <div class="bird-card">
+                        <div class="bird-image">
+                            <img src="https://images.unsplash.com/photo-1552728089-57bdde30beb3?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=725&q=80" alt="Green Parrot">
+                        </div>
+                        <div class="bird-info">
+                            <h3>Green Parrot</h3>
+                            <div class="bird-details">
+                                <span>2 years old</span>
+                                <span>Green Color</span>
+                            </div>
+                            <div class="bird-price">1500.00</div>
+                            <div class="bird-actions">
+                                <div class="likes">
+                                    <i class="fas fa-heart"></i> 2 likes
+                                </div>
+                                <button class="bid-btn">Increase Bid</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Bird Card 2 -->
+                    <div class="bird-card">
+                        <div class="bird-image">
+                            <img src="https://images.unsplash.com/photo-1522926193341-e9ffd686c60f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80" alt="Black Parrot">
+                        </div>
+                        <div class="bird-info">
+                            <h3>Green Parrot</h3>
+                            <div class="bird-details">
+                                <span>3 years old</span>
+                                <span>Black Color</span>
+                            </div>
+                            <div class="bird-price">₹15000.00</div>
+                            <div class="bird-actions">
+                                <div class="likes">
+                                    <i class="fas fa-heart"></i> 1 likes
+                                </div>
+                                <button class="bid-btn">Increase Bid</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Bird Card 3 -->
+                    <div class="bird-card">
+                        <div class="bird-image">
+                            <img src="https://images.unsplash.com/photo-1597848212624-e9e5b45e66b3?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80" alt="Red Parrot">
+                        </div>
+                        <div class="bird-info">
+                            <h3>Green Parrot</h3>
+                            <div class="bird-details">
+                                <span>4 years old</span>
+                                <span>Red Color</span>
+                            </div>
+                            <div class="bird-price">₹16000.00</div>
+                            <div class="bird-actions">
+                                <div class="likes">
+                                    <i class="fas fa-heart"></i> 1 likes
+                                </div>
+                                <button class="bid-btn">Increase Bid</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Bird Card 4 -->
+                    <div class="bird-card">
+                        <div class="bird-image">
+                            <img src="https://images.unsplash.com/photo-1552728089-57bdde30beb3?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=725&q=80" alt="White Parrot">
+                        </div>
+                        <div class="bird-info">
+                            <h3>Green Parrot</h3>
+                            <div class="bird-details">
+                                <span>4 years old</span>
+                                <span>White Color</span>
+                            </div>
+                            <div class="bird-price">₹16000.00</div>
+                            <div class="bird-actions">
+                                <div class="likes">
+                                    <i class="fas fa-heart"></i> 1 likes
+                                </div>
+                                <button class="bid-btn">Increase Bid</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Add Bird Form -->
+                <div class="add-bird-form">
+                    <h2 class="form-title"><i class="fas fa-plus-circle"></i> Add New Bird</h2>
+                    <form>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="bird-name">Bird Name</label>
+                                <input type="text" id="bird-name" placeholder="e.g., Indian Parakeet">
+                            </div>
+                            <div class="form-group">
+                                <label for="bird-age">Age (months)</label>
+                                <input type="number" id="bird-age" placeholder="e.g., 12">
+                            </div>
+                            <div class="form-group">
+                                <label for="bird-color">Color</label>
+                                <select id="bird-color">
+                                    <option value="">Select a color</option>
+                                    <option value="RED">Red</option>
+                                    <option value="GREEN">Green</option>
+                                    <option value="BLUE">Blue</option>
+                                    <option value="WHITE">White</option>
+                                    <option value="BLACK">Black</option>
+                                    <option value="BROWN">Brown</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="bird-category">Category</label>
+                                <select id="bird-category">
+                                    <option value="">Select a category</option>
+                                    <option value="PARROT">Parrot</option>
+                                    <option value="PIGEON">Pigeon</option>
+                                    <option value="SPARROW">Sparrow</option>
+                                    <option value="EAGLE">Eagle</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="bird-price">Price (₹)</label>
+                                <input type="number" id="bird-price" step="0.01" placeholder="e.g., 2500">
+                            </div>
+                            <div class="form-group">
+                                <label for="bird-weight">Weight (kg)</label>
+                                <input type="number" id="bird-weight" step="0.01" placeholder="e.g., 0.45">
+                            </div>
+                            <div class="form-group" style="grid-column: 1 / -1;">
+                                <label for="bird-image">Bird Image</label>
+                                <input type="file" id="bird-image">
+                            </div>
+                            <div class="form-group" style="grid-column: 1 / -1;">
+                                <label for="bird-description">Description</label>
+                                <textarea id="bird-description" placeholder="Describe the bird's characteristics, behavior, and any special care requirements..."></textarea>
+                            </div>
+                        </div>
+                        <button type="submit" class="submit-btn"><i class="fas fa-feather-alt"></i> Add Bird</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Simple interactivity
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add active class to clicked sidebar items
+            const sidebarItems = document.querySelectorAll('.sidebar-menu a');
+            sidebarItems.forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    sidebarItems.forEach(i => i.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+            
+            // Like functionality
+            const likeButtons = document.querySelectorAll('.likes');
+            likeButtons.forEach(like => {
+                like.addEventListener('click', function() {
+                    const heartIcon = this.querySelector('i');
+                    heartIcon.classList.toggle('fas');
+                    heartIcon.classList.toggle('far');
+                });
+            });
+        });
+    </script>
+</body>
+</html>

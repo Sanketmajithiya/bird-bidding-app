@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block content %}
+  <h2>Bids for {{ bird.name }}</h2>
+
+  {% if bids %}
+    <ul>
+      {% for bid in bids %}
+        <li>
+          <div>
+            <strong>Buyer:</strong> {{ bid.buyer.username }} <br />
+            <strong>Amount:</strong> ₹{{ bid.amount }}
+          </div>
+          <a href="{% url 'seller:approve_bid' bird.id bid.id %}">Approve</a>
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>No bids yet.</p>
+  {% endif %}
+{% endblock %}
