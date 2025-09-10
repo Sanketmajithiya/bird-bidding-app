@@ -1,10 +1,16 @@
 ## 📂 Image Assets
+---
+## 📸 Application Screenshots
 
-Make sure the following images exist in the `/Asset/` directory:
+### 🔒 Admin Dashboard
+![Admin Dashboard](Assets/image_Admin.png)
+### 🛒 Seller Dashboard
+![Seller Dashboard](Assets/image_seller.png)
 
-* `image_Admin.png`
-* `image_seller.png`
-* `image1.png`
+### 🧑‍💻 Buyer Dashboard
+![Buyer Dashboard](Assets/image1.png)
+
+---
 
 
 Great! Based on the details you've shared, here’s a professional and complete `README.md` file tailored for your **Bird Bidding App**.
